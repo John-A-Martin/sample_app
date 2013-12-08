@@ -65,10 +65,7 @@ describe "User pages" do
     end
     describe "with valid information" do
       before do
-        fill_in "Name",         with: "Example User"
-        fill_in "Email",        with: "user@example.com"
-        fill_in "Password",     with: "foobar"
-        fill_in "Confirmation", with: "foobar"
+        valid_information("Example User", "user@example.com", "foobar")
       end
       it "should check a user" do
         expect { click_button submit }.to change(User, :count).by(1)
@@ -102,10 +99,7 @@ describe "User pages" do
         let(:new_name)  { "New Name" }
         let(:new_email) { "new@example.com" } 
       before do
-        fill_in "Name",             with: new_name
-        fill_in "Email",            with: new_email
-        fill_in "Password",         with: user.password
-        fill_in "Confirm Password", with: user.password
+        valid_information(new_name, new_email, user.password)
         click_button "Save changes"
       end
         it { should have_selector('title', text: new_name) }

@@ -30,7 +30,11 @@ describe "Authentication" do
       it { should_not have_link('Sign in', href: signin_path) }
       describe "followed by signout" do
         before { click_link "Sign out" }
-        it { should have_link('Sign in') }
+        it { should have_link('Sign in', href:signin_path) }
+        it { should_not have_link('Users') }
+        it { should_not have_link('Profile') }
+        it { should_not have_link('Settings') }
+        it { should_not have_link('Sign out') }
       end
     end
   end
@@ -40,8 +44,7 @@ describe "Authentication" do
       describe "when attempting to visit a protected page" do
         before do
           visit edit_user_path(user)
-          fill_in "Email",    with: user.email
-          fill_in "Password", with: user.password
+          fill_in_signin(user)
           click_button "Sign in"
         end
         describe "after signing in" do
@@ -65,6 +68,18 @@ describe "Authentication" do
         end
       end
     end
+    describe "for signed-in users" do
+      let(:user) { FactoryGirl.create(:user) }
+      before { valid_signin user }
+      describe "accessing new user" do
+        before  { get new_user_path }
+        specify { response.should redirect_to(root_url) }
+      end
+      describe "accessing create user" do
+        before  { post users_path }
+        specify { response.should redirect_to(root_url) }
+      end
+    end
     describe "as wrong user" do
       let(:user)       { FactoryGirl.create(:user) }
       let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
@@ -73,7 +88,7 @@ describe "Authentication" do
         before { visit edit_user_path(wrong_user) }
         it { should_not have_selector('title', text: full_title('Edit user')) }
       end
-      describe "submitting a PUT request to the Users# update action" do
+      describe "submitting a PUT request to the Users#update action" do
         before { put user_path(wrong_user) }
         specify { response.should redirect_to(root_url) }
       end
