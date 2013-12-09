@@ -6,5 +6,6 @@
   <% end %>
   <%= user.email if current_user.admin %>
   <%= "Administrator" if current_user.admin && user.admin %>
+  (<%= user.microposts.count %>)
 </li>
 
