@@ -35,6 +35,10 @@ describe "User pages" do
           expect { click_link('delete') }.to change(User, :count).by(-1)
         end
         it { should_not have_link('delete', href: user_path(admin)) }
+        describe "should not delete self (admin)" do
+          before { delete user_path(admin) }
+          specify { response.should redirect_to(root_url) }
+        end
       end
     end
   end
