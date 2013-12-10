@@ -87,8 +87,6 @@ describe "Authentication" do
           before { delete micropost_path(FactoryGirl.create(:micropost)) }
           specify { response.should redirect_to(signin_path) }
         end
-        describe "next" do
-        end
       end
     end
     describe "for signed-in users" do
