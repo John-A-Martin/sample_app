@@ -28,6 +28,13 @@ describe "StaticPages" do
           page.should have_selector("li##{item.id}", text: item.content)
         end
       end
+      it "should have micropost(s)" do
+        should have_content("2 microposts")
+        click_link "delete"
+        should have_content("1 micropost")
+        click_link "delete"
+        should have_content("0 microposts")
+      end
     end
   end
 
