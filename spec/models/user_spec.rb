@@ -32,6 +32,7 @@ describe User do
   it { should respond_to(:authenticate) }
   it { should respond_to(:microposts) }
   it { should respond_to(:feed) }
+  it { should respond_to(:relationships) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -154,6 +155,26 @@ describe User do
       its(:feed) { should include(newer_micropost) }
       its(:feed) { should include(older_micropost) }
       its(:feed) { should_not include(unfollowed_post) }
+    end
+  end
+  describe "relationship associations" do
+    before { @user.save }
+    let!(:follower) { FactoryGirl.create(:user) }
+    let!(:followed) { FactoryGirl.create(:user) }
+    let!(:re1) { follower.relationships.create!(followed_id: @user.id) }
+    let!(:re2) { @user.relationships.create!(followed_id: followed.id) }
+    it "should destroy associated relationships" do
+      user_relationships = @user.relationships.dup
+      follower_relationships = follower.relationships.dup
+      @user.destroy
+      user_relationships.should_not be_empty
+      user_relationships.each do |relationship|
+        Relationship.find_by_id(relationship.id).should be_nil
+      end
+      follower_relationships.should_not be_empty
+      follower_relationships.each do |relationship|
+        Relationship.find_by_id(relationship.id).should be_nil
+      end
     end
   end
 end
