@@ -9,14 +9,14 @@ namespace :db do
 end
 
 def make_users
-    admin = make_user("John Martin", "jam_ak_2004@yahoo.com", "foobar")
+    admin = make_user("John Martin", "jam_ak_2004@yahoo.com",  "foobar")
     admin.toggle!(:admin)
-    make_user("Joyce Martin",      "joyce@acrusintravel.com", "foobar")
-    make_user("Julianna Martin",   "jm@horses.com",           "foobar")
-    make_user("Jeremiah Martin",   "jam@houses.com",          "foobar")
-    make_user("John Martin II",    "j_martinii@yahoo.com",    "foobar")
-    make_user("Jennifer Martin",   "jen@my.com",              "foobar")
-    make_user("Chris Martin",      "maxer@test.com",          "foobar")
+    make_user("Joyce Martin",      "joyce@acruisintravel.com", "foobar")
+    make_user("Julianna Martin",   "jm@horses.com",            "foobar")
+    make_user("Jeremiah Martin",   "jam@houses.com",           "foobar")
+    make_user("John Martin II",    "j_martinii@yahoo.com",     "foobar")
+    make_user("Jennifer Martin",   "jen@my.com",               "foobar")
+    make_user("Chris Martin",      "maxer@test.com",           "foobar")
 #    make_user("", email: "", password: "foobar")
     60.times do |n|
       name  = Faker::Name.name
